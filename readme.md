@@ -12,7 +12,7 @@ A retrieval-augmented generation (RAG) API server that summarizes YouTube videos
 ## Installation
 
 ```bash
-pip install -r requirements.txt
+pip install -r requirement.txt
 ```
 
 ## Usage
@@ -42,7 +42,7 @@ GET /search?video_id="xyz"&question="question about video"
 Set environment variables in `.env`:
 
 ```
-GEMINI_API_KEY="KEY"
+GOOGLE_API_KEY="GEMINI_API_KEY"
 ```
 
 ## Running the Server
