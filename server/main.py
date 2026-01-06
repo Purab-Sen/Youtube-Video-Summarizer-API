@@ -9,7 +9,7 @@ CORS(app)
 def hello():
     return jsonify({"message":"server is running"})
 
-@app.route("/search")
+@app.route("/search", methods=['GET'])
 def search():
     video_id = request.args.get("video_id")
     question = request.args.get("question")
