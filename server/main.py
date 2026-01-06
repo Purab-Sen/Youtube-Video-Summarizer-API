@@ -5,16 +5,24 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
-@app.route("/hello", methods=['GET'])
+@app.route("/health-check", methods=['GET'])
 def hello():
-    return jsonify({"message":"Hi chanchal"})
+    return jsonify({"message":"server is running"})
 
-@app.route('/search', methods=['GET'])
+@app.route("/search")
 def search():
     video_id = request.args.get("video_id")
     question = request.args.get("question")
-    answer = get_answer_of_question(video_id,question)
-    return jsonify({"message": answer})
+
+    try:
+        answer = get_answer_of_question(video_id, question)
+        return jsonify({"answer": answer}), 200
+
+    except ValueError as e:
+        return jsonify({"error": str(e)}), 400
+
+    except Exception:
+        return jsonify({"error": "Internal server error"}), 500
 
 if __name__ == '__main__':
     app.run(debug=True)
