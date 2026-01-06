@@ -17,6 +17,9 @@ def getRetriever(video_id):
         transcripts = " ".join(chunk.text for chunk in transcript_list)
     except TranscriptsDisabled:
         print("No captions available for this video id")
+    except Exception as e:
+        print("Transcript error:", type(e), e)
+
     
     #split the transcripts into chunks
     text_splitter = RecursiveCharacterTextSplitter(
