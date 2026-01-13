@@ -21,7 +21,8 @@ def search():
     except ValueError as e:
         return jsonify({"error": str(e)}), 400
 
-    except Exception:
+    except Exception as e:
+        print(e)
         return jsonify({"error": "Internal server error"}), 500
 
 if __name__ == '__main__':

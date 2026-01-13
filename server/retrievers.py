@@ -1,17 +1,12 @@
-from youtube_transcript_api import (
-    YouTubeTranscriptApi,
-    TranscriptsDisabled,
-    NoTranscriptFound,
-    VideoUnavailable,
-    RequestBlocked
-)
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_community.vectorstores import FAISS
 from dotenv import dotenv_values
+import requests
 
 video_retriever_map = {}
 api_key = dotenv_values()["GOOGLE_API_KEY"]
+scrap_api_key = dotenv_values()["SCRAP_API_KEY"]
 
 
 def getRetriever(video_id):
@@ -21,16 +16,13 @@ def getRetriever(video_id):
     transcripts = None
 
     try:
-        transcript_list = YouTubeTranscriptApi().fetch(video_id, languages=["en"])
-        transcripts = " ".join(chunk.text for chunk in transcript_list)
+        res = requests.get(f"https://api.scrapingdog.com/youtube/transcripts?api_key={scrap_api_key}&v={video_id}")
+        data = res.json()["transcripts"]
+        transcripts = " ".join(chunk['text'] for chunk in data)
 
-    except (TranscriptsDisabled, NoTranscriptFound, VideoUnavailable):
-        raise ValueError("No transcript available for this video")
-
-    except RequestBlocked:
-        raise ValueError(
-            "Transcript request blocked by YouTube (cloud IP restriction)"
-        )
+    except Exception as e:
+        print(e)
+        raise Exception(e)
 
     if not transcripts:
         raise ValueError("Transcript could not be retrieved")
