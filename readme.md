@@ -44,6 +44,9 @@ Set environment variables in `.env`:
 ```
 GOOGLE_API_KEY="GEMINI_API_KEY"
 ```
+```
+scrap_api_key="SCRAP_API_KEY" #used for transcript access
+```
 
 ## Running the Server
 
